@@ -68,12 +68,12 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     search.addEventListener('click', () => {
-        searchPokemon(searchInput.value);
+        searchPokemon(searchInput.value.toLowerCase());
     });
 
     searchInput.addEventListener('keyup', (event) => {
         if(event.key == 'Enter'){
-            searchPokemon(searchInput.value);
+            searchPokemon(searchInput.value.toLowerCase());
         }
     });
 
