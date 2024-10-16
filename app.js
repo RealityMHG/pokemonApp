@@ -318,7 +318,7 @@ window.addEventListener('DOMContentLoaded', () => {
         for(gen in jsonSprites){
             let genGames = jsonSprites[gen];
             for(game in genGames ){
-                if(game != 'icons'){
+                if(game != 'icons' && game!='x-y'){
                     if(genGames[game].front_default !== null){
                         let pokemonGen = new PokemonFromGen(gen, game, genGames[game].front_default, genGames[game].back_default);
                         pokemonGensList.push(pokemonGen);
