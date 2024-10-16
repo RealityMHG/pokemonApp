@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="app.js"></script>
+    <script
+      src="https://kit.fontawesome.com/7c8801c017.js"
+      crossorigin="anonymous"
+    ></script>
+    <title>PokeDex</title>
+  </head>
+  <body>
+    <div class="gen-selector">
+      <div class="select-field">
+        <p class="select-text">Select Generation</p>
+        <i class="fa-solid fa-caret-down"></i>
+      </div>
+      <ul class="gen-list hide"></ul>
+    </div>
+    <div class="container">
+      <div class="search-box">
+        <img src="pokeball.png" />
+        <input type="text" placeholder="Enter your Pokemon!" autofocus />
+        <button class="fa-solid fa-magnifying-glass"></button>
+      </div>
+
+      <div class="not-found">
+        <img src="404.png" />
+        <p>Oops! Invalid Pokemon :/</p>
+      </div>
+
+      <div class="pokemon-box">
+        <p class="pokemon-id"></p>
+        <img src="" />
+        <button class="fa-solid fa-share"></button>
+        <div class="pokemon-type"></div>
+        <div class="evo-btn">
+          <button class="prev-evo">Previous Evolution</button>
+          <button class="next-evo">Next Evolution</button>
+        </div>
+      </div>
+    </div>
+    <div class="evo-pop-up">
+      <i class="fa-regular fa-circle-question"></i>
+      <h1>Choose Your Evolution Path!</h1>
+      <div class="evo-path-container"></div>
+    </div>
+
+    <div class="toast-box"></div>
+  </body>
+</html>

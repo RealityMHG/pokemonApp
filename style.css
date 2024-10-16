@@ -1,0 +1,311 @@
+*{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: none;
+    box-sizing: border-box;
+}
+
+body{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #44b3db;
+}
+
+.gen-selector{
+    font-family: 'Roboto', sans-serif;
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    width: 200px;
+    display: none;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 6px;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.game{
+    width: 100%;
+    padding: 5px 0 5px 10px;
+    list-style: none;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.game:hover{
+    background: rgba(255, 255, 255, 0.7);
+
+}
+
+.select-field{
+    width: 100%;
+    padding: 15px 20px;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #1d6d8a;
+    cursor: pointer;
+    transition: 0.4s ease;
+}
+
+.container{
+    position: relative;
+    width: 500px;
+    height: 105px;
+    background: #fff;
+    padding: 28px 32px;
+    overflow: hidden;
+    border-radius: 18px;
+    font-family: 'Roboto', sans-serif;
+    transition: 0.6s ease-out;
+}
+
+.search-box{
+    width: 100%;
+    height: min-content;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.search-box input{
+    color: #1d6d8a;
+    width: 80%;
+    font-size: 24px;
+    font-weight: 500;
+    text-transform: lowercase;
+    padding-left: 32px;
+}
+
+.search-box input::placeholder{
+    font-size: 20px;
+    font-weight: 500;
+    color: #1d6d8a;
+    text-transform: capitalize;
+}
+
+.search-box button{
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    color: #1d6d8a;
+    background: #77d9fc;
+    border-radius: 50%;
+    font-size: 22px;
+    transition: 0.4s ease;
+}
+
+.search-box img{
+    width: 30px;
+    -webkit-transition: -webkit-transform 1s;
+    transition: -webkit-transform 1s;
+}
+
+.search-box img:hover{
+    -webkit-transform: rotate(360deg) translateZ(0);
+    transform: rotate(360deg) translateZ(0);
+    cursor: pointer;
+}
+
+.search-box button:hover,
+.pokemon-box button:hover,
+#select-field:hover{
+    color: #fff;
+    background: #1d6d8a;
+}
+
+.pokemon-box{
+    margin-top: 40px;
+    text-align: center;
+    display: none;
+}
+
+.pokemon-id{
+    color: #1d6d8a;
+    text-align: left;
+    margin: 20px 0 0 60px;
+}
+
+.pokemon-box img{
+    width: 40%;
+    max-height: 200px;
+}
+
+.pokemon-box button{
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    color: #1d6d8a;
+    background: #77d9fc;
+    border-radius: 50%;
+    font-size: 17px;
+    margin-bottom: 10px;
+    transition: 0.4s ease;
+}
+
+.pokemon-type{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 15px;
+}
+
+.type{
+    width: 100%;
+    border-radius: 15px;
+}
+
+.not-found{
+    width: 100%;
+    text-align: center;
+    margin-top: 50px;
+    display: none;
+}
+
+.not-found img{
+    width: 70%;
+}
+
+.not-found p{
+    color: #1d6d8a;
+    font-size: 22px;
+    font-weight: 500;
+    margin-top: 12px;
+}
+
+.evo-btn{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.evo-btn button{
+    width: 200px;
+    border-radius: 10px;
+}
+
+.toast-box{
+    font-family: 'Roboto', sans-serif;
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 20px;
+}
+
+.toast{
+    width: 400px;
+    height: 80px;
+    background: #fff;
+    font-weight: 500;
+    margin: 15px 0;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    position: relative;
+    transform: translateX(100%);
+    animation: moveLeft 0.2s linear forwards;
+}
+
+.toast i{
+    margin: 0 20px;
+    font-size: 35px;
+    color: darkgoldenrod;
+}
+
+.toast::after{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 5px;
+    background: darkgoldenrod;
+    animation: toastAnim 3s linear forwards;
+}
+
+.evo-pop-up{
+    font-family: 'Roboto', sans-serif;
+    width: 450px;
+    background: #fff;
+    border-radius: 6px;
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translate(-50%,-50%) scale(0.1);
+    text-align: center;
+    padding: 0 30px 30px;
+    color: #1d6d8a;
+    visibility: hidden;
+    transition: transform 0.4s, top 0.4s;
+}
+
+.open-pop{
+    visibility: visible;
+    top: 50%;
+    transform: translate(-50%,-50%) scale(1);
+}
+
+.evo-pop-up i{
+    font-size: 50px;
+    margin-top: -50%;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+.evo-pop-up h1{
+    font-size: 38px;
+    font-weight: 500;
+    margin: 30px 0 10px;
+}
+
+.evo-path-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.evo-path-btn{
+    cursor: pointer;
+    color: #1d6d8a;
+    background: #44b3db;
+    width: 100%;
+    height: 30px;
+    font-weight: 600;
+    border-radius: 10px;
+}
+
+.evo-path-btn:hover{
+    background: #1d6d8a;
+    color: #fff;
+    transition: 0.1s ease;
+}
+
+.hide{
+    display: none;
+}
+
+.rotate{
+    transform: rotate(180deg);
+}
+
+@keyframes toastAnim{
+    100%{
+        width: 0;
+    }
+}
+
+@keyframes moveLeft{
+    100%{
+        transform: translateX(0);
+    }
+}
