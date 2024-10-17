@@ -40,7 +40,8 @@ window.addEventListener('DOMContentLoaded', () => {
     const pokemonBox = document.querySelector('.pokemon-box');
     const pokemonId = document.querySelector('.pokemon-id');
     const pokemonImage = document.querySelector('.pokemon-box img');
-    const pokemonTurn = document.querySelector('.pokemon-box button');
+    const pokemonTurn = document.querySelector('.turn');
+    const pokemonShiny = document.querySelector('.shiny');
     const pokemonType = document.querySelector('.pokemon-type');
 
     const prevPokemonEvo = document.querySelector('.prev-evo');
@@ -58,10 +59,11 @@ window.addEventListener('DOMContentLoaded', () => {
     let pokemonGensList = [];
     
     let currentPokemonGen = 'normal';
-    let pokemonFrontImage = '';
-    let pokemonTurnedImage = '';
+    let pokemonDefaultImages = [];
+    let pokemonShinyImages = [];
    
     let isItForward = true;
+    let isItShiny = false;
 
     pokeBall.addEventListener('click', () => {
         location.reload();
@@ -77,6 +79,10 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    pokemonShiny.addEventListener('click', () => {
+        shinyToggle();
+    });
+
     pokemonTurn.addEventListener('click', () => {
         turnPokemon();
     });
@@ -89,12 +95,14 @@ window.addEventListener('DOMContentLoaded', () => {
         getEvolution('next');
     });
 
+    //Store the shiny sprite same way as normal sprite
+    //group front and back sprite into a []
     class PokemonFromGen{
-        constructor(gen, game, frontSprite, backSprite){
+        constructor(gen, game, defaultSprite, shinySprite){
             this.gen = gen;
             this.game = game;
-            this.frontSprite = frontSprite;
-            this.backSprite = backSprite;
+            this.defaultSprite = defaultSprite;
+            this.shinySprite = shinySprite;
         }
     }
 
@@ -109,6 +117,9 @@ window.addEventListener('DOMContentLoaded', () => {
         currentevoIndex = 0;
         currentPokemonGen = 'Select Generation';
         isItForward = true;
+        
+        if(isItShiny)
+            shinyToggle();
 
         while(genList.firstChild){
             genList.removeChild(genList.lastChild);
@@ -140,16 +151,21 @@ window.addEventListener('DOMContentLoaded', () => {
 
                 pokemonBox.style.display = 'block';
     
-                pokemonFrontImage = json.sprites.front_default;
-                pokemonTurnedImage = json.sprites.back_default;
+                pokemonDefaultImages = [json.sprites.front_default, json.sprites.back_default];
+                pokemonShinyImages = [json.sprites.front_shiny, json.sprites.back_shiny];
 
-                if(pokemonTurnedImage != null)
+                if(pokemonDefaultImages[1] != null)
                     pokemonTurn.style.visibility = 'visible';
                 else
                     pokemonTurn.style.visibility = 'hidden';
+
+                if(pokemonShinyImages[0] != null)
+                    pokemonShiny.style.visibility = 'visible';
+                else
+                    pokemonShiny.style.visibility = 'hidden';
     
                 pokemonId.innerHTML = '#' + json.id;
-                pokemonImage.src = pokemonFrontImage;
+                pokemonImage.src = pokemonDefaultImages[0];
     
                 for(let i=0; i<json.types.length; i++){
                     addType(json.types[i].type.name);
@@ -177,15 +193,27 @@ window.addEventListener('DOMContentLoaded', () => {
                 selectText.innerHTML = game.textContent;
                 currentPokemonGen = selectText.innerHTML;
                 let getGenClass = pokemonGensList.find((gen) => gen.game == currentPokemonGen);
-                pokemonFrontImage = getGenClass.frontSprite;
-                pokemonTurnedImage = getGenClass.backSprite;
+                pokemonDefaultImages[0] = getGenClass.defaultSprite[0];
+                pokemonDefaultImages[1] = getGenClass.defaultSprite[1];
+                pokemonShinyImages[0] = getGenClass.shinySprite[0];
+                pokemonShinyImages[1] = getGenClass.shinySprite[1];
                 isItForward = true;
-                pokemonImage.src = pokemonFrontImage;
-                if(pokemonTurnedImage == null){
+
+                if(isItShiny)
+                    shinyToggle();
+
+                pokemonImage.src = pokemonDefaultImages[0];
+
+                if(pokemonDefaultImages[1] == null)
                     pokemonTurn.style.visibility = 'hidden';
-                }else{
+                else
                     pokemonTurn.style.visibility = 'visible';
-                }
+
+                if(pokemonShinyImages[0] != null)
+                    pokemonShiny.style.visibility = 'visible';
+                else
+                    pokemonShiny.style.visibility = 'hidden';
+
                 genList.classList.toggle('hide');
                 arrowIcon.classList.toggle('rotate');
             });
@@ -201,17 +229,36 @@ window.addEventListener('DOMContentLoaded', () => {
         const newType = document.createElement('p');
         newType.classList.add('type');
         pokemonType.appendChild(newType);
-        newType.innerHTML = type;
+        newType.innerHTML = type.charAt(0).toUpperCase() + type.slice(1);
         newType.style.backgroundColor = colours[type];
     }
 
     function turnPokemon(){
+        let correctImages = [];
+        if(isItShiny){
+            correctImages = pokemonShinyImages;
+        }else{
+            correctImages = pokemonDefaultImages;
+        }
+
         if(isItForward){
-            pokemonImage.src = pokemonTurnedImage;
+            pokemonImage.src = correctImages[1];
             isItForward = false;
         }else{
-            pokemonImage.src = pokemonFrontImage;
+            pokemonImage.src = correctImages[0];
             isItForward = true;
+        }
+    }
+
+    function shinyToggle(){
+        if(!isItShiny){
+            pokemonShiny.style.backgroundColor = '#1d6d8a';
+            isItShiny = true;
+            pokemonImage.src = pokemonShinyImages[0];
+        }else{
+            pokemonShiny.style.backgroundColor = '#77d9fc'
+            isItShiny = false;
+            pokemonImage.src = pokemonDefaultImages[0];
         }
     }
 
@@ -320,7 +367,8 @@ window.addEventListener('DOMContentLoaded', () => {
             for(game in genGames ){
                 if(game != 'icons' && game!='x-y'){
                     if(genGames[game].front_default !== null){
-                        let pokemonGen = new PokemonFromGen(gen, game, genGames[game].front_default, genGames[game].back_default);
+                        let pokemonGen = new PokemonFromGen(gen, game, [genGames[game].front_default, genGames[game].back_default],
+                             [genGames[game].front_shiny, genGames[game].back_shiny]);
                         pokemonGensList.push(pokemonGen);
                         let gameUnit = document.createElement('li');
                         gameUnit.textContent = game;

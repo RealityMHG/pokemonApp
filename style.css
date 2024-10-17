@@ -64,6 +64,7 @@ body{
     border-radius: 18px;
     font-family: 'Roboto', sans-serif;
     transition: 0.6s ease-out;
+    border: 1px solid grey;
 }
 
 .search-box{
@@ -99,6 +100,7 @@ body{
     border-radius: 50%;
     font-size: 22px;
     transition: 0.4s ease;
+    border: 1px solid grey;
 }
 
 .search-box img{
@@ -114,7 +116,7 @@ body{
 }
 
 .search-box button:hover,
-.pokemon-box button:hover,
+.turn:hover,
 #select-field:hover{
     color: #fff;
     background: #1d6d8a;
@@ -148,6 +150,10 @@ body{
     transition: 0.4s ease;
 }
 
+.shiny{
+    position: absolute;
+}
+
 .pokemon-type{
     display: flex;
     align-items: center;
@@ -158,6 +164,8 @@ body{
 .type{
     width: 100%;
     border-radius: 15px;
+    border: 1px solid grey;
+    font-weight: 500;
 }
 
 .not-found{
@@ -188,6 +196,18 @@ body{
 .evo-btn button{
     width: 200px;
     border-radius: 10px;
+    border: 1px solid grey;
+    background: #c074d6;
+    color: #fff;
+    overflow: hidden;
+}
+
+.prev-evo:hover{
+    background: #a41ee9;
+}
+
+.next-evo:hover{
+    background: #ff3c7f;
 }
 
 .toast-box{
