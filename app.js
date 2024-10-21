@@ -21,6 +21,8 @@ window.addEventListener('DOMContentLoaded', () => {
         fairy: '#D685AD',
     };
 
+    const numOfPokemon = 1025;
+
     const error404 = document.querySelector('.not-found');
     let is404 = false;
 
@@ -52,7 +54,11 @@ window.addEventListener('DOMContentLoaded', () => {
     const popUpEvoPath = document.querySelector('.evo-pop-up');
     const evoPathContainer = document.querySelector('.evo-path-container');
 
+    const randomPokemon = document.querySelector('.random-pokemon i');
+    const randomPokemonText = document.querySelector('.random-pokemon p');
+
     let currentPokemon = '';
+    let currentPokemonID = 0;
     let currentevoIndex = 0;
     let pokemonEvolutionChain = [];
     
@@ -95,8 +101,18 @@ window.addEventListener('DOMContentLoaded', () => {
         getEvolution('next');
     });
 
-    //Store the shiny sprite same way as normal sprite
-    //group front and back sprite into a []
+    randomPokemon.addEventListener('mouseenter', () => {
+        randomPokemonText.style.visibility = 'visible';
+    });
+
+    randomPokemon.addEventListener('mouseleave', () => {
+        randomPokemonText.style.visibility = 'hidden';
+    });
+
+    randomPokemon.addEventListener('click', () => {
+        searchPokemon(Math.floor(Math.random() * numOfPokemon));
+    });
+
     class PokemonFromGen{
         constructor(gen, game, defaultSprite, shinySprite){
             this.gen = gen;
@@ -145,6 +161,7 @@ window.addEventListener('DOMContentLoaded', () => {
         })
         .then(json => {
             if(!is404){
+                container.style.height = '100px';
                 error404.style.display = 'none';
                 
                 genSelector.style.display = 'block';
@@ -164,13 +181,25 @@ window.addEventListener('DOMContentLoaded', () => {
                 else
                     pokemonShiny.style.visibility = 'hidden';
     
+                currentPokemonID = json.id;
                 pokemonId.innerHTML = '#' + json.id;
                 pokemonImage.src = pokemonDefaultImages[0];
+
+                if(searchInput.value != json.name){
+                    searchInput.value = json.name;
+                }
+
+                if(currentPokemon != json.name){
+                    currentPokemon = json.name;
+                }
     
                 for(let i=0; i<json.types.length; i++){
                     addType(json.types[i].type.name);
                 }
-                container.style.height = "450px";
+
+                setTimeout(() => {
+                    container.style.height = "450px";
+                },100);
     
                 pokemonBox.style.display = "block";
                 body.style.backgroundColor = colours[json.types[0].type.name];
@@ -263,7 +292,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     function getEvolutionChain(){
-        fetch(`https://pokeapi.co/api/v2/pokemon-species/${currentPokemon}`)
+        fetch(`https://pokeapi.co/api/v2/pokemon-species/${currentPokemonID}`)
         .then(response => response.json())
         .then(json => {
             getPokemonEvolutions(json.evolution_chain.url);
@@ -310,6 +339,8 @@ window.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }
+            console.log(pokemonEvolutionChain);
+            console.log(currentevoIndex);
         });
     }
 
@@ -323,7 +354,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 currentevoIndex--;
             }
         }else if(prevOrNext == 'next'){
-            if(currentevoIndex+1 == pokemonEvolutionChain.length){
+            if(currentevoIndex+1 >= pokemonEvolutionChain.length){
                 showToast('<i class="fa-solid fa-circle-exclamation"></i>Last evolution from this pokemon!');
                 stop = true;
             }else{
