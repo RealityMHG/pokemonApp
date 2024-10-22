@@ -55,7 +55,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const evoPathContainer = document.querySelector('.evo-path-container');
 
     const randomPokemon = document.querySelector('.random-pokemon i');
-    const randomPokemonText = document.querySelector('.random-pokemon p');
 
     let currentPokemon = '';
     let currentPokemonID = 0;
@@ -100,14 +99,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
     nextPokemonEvo.addEventListener('click', () => {
         getEvolution('next');
-    });
-
-    randomPokemon.addEventListener('mouseenter', () => {
-        randomPokemonText.style.visibility = 'visible';
-    });
-
-    randomPokemon.addEventListener('mouseleave', () => {
-        randomPokemonText.style.visibility = 'hidden';
     });
 
     randomPokemon.addEventListener('click', () => {
