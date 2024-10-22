@@ -56,9 +56,8 @@ body{
 
 .random-pokemon{
     font-family: 'Roboto', sans-serif;
-    position: absolute;
-    top: 300px;
-    left: 300px;
+    position: relative;
+    left: -80px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -68,7 +67,8 @@ body{
 }
 
 .random-pokemon i{
-    background: grey;
+    background: #fff;
+    border: 1px solid grey;
     border-radius: 50%;
     padding: 20px;
     cursor: pointer;

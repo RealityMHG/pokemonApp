@@ -61,6 +61,7 @@ window.addEventListener('DOMContentLoaded', () => {
     let currentPokemonID = 0;
     let currentevoIndex = 0;
     let pokemonEvolutionChain = [];
+    let pokemonEvolutionChainbyID = [];
     
     let pokemonGensList = [];
     
@@ -122,6 +123,8 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    //alternate between male and female
+
     function searchPokemon(pokemon){
         is404 = false;
 
@@ -143,6 +146,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         pokemonGensList = [];
         pokemonEvolutionChain = [];
+        pokemonEvolutionChainbyID = [];
         selectField.replaceWith(selectField.cloneNode(true));
 
         if(currentPokemon == '')
@@ -185,12 +189,8 @@ window.addEventListener('DOMContentLoaded', () => {
                 pokemonId.innerHTML = '#' + json.id;
                 pokemonImage.src = pokemonDefaultImages[0];
 
-                if(searchInput.value != json.name){
-                    searchInput.value = json.name;
-                }
-
-                if(currentPokemon != json.name){
-                    currentPokemon = json.name;
+                if(searchInput.value != json.species.name){
+                    searchInput.value = json.species.name;
                 }
     
                 for(let i=0; i<json.types.length; i++){
@@ -303,42 +303,52 @@ window.addEventListener('DOMContentLoaded', () => {
         fetch(chainUrl)
         .then(response => response.json())
         .then(json => {
+            pokemonEvolutionChainbyID.push([json.chain.species.url.split('/')[6]]);
             pokemonEvolutionChain.push([json.chain.species.name]);
             if(json.chain.evolves_to.length != 0){
                 if(json.chain.evolves_to.length > 1){
                     let evoPaths = [];
+                    let evoPathsbyID = [];
                     for(evo in json.chain.evolves_to){
-                        if(currentPokemon == json.chain.evolves_to[evo].species.name){
+                        if(currentPokemonID == json.chain.evolves_to[evo].species.url.split('/')[6]){
                             currentevoIndex = 1;
                         }
-                       evoPaths.push(json.chain.evolves_to[evo].species.name);
+                        evoPathsbyID.push(json.chain.evolves_to[evo].species.url.split('/')[6]);
+                        evoPaths.push(json.chain.evolves_to[evo].species.name);
                     }
+                    pokemonEvolutionChainbyID.push(evoPathsbyID);
                     pokemonEvolutionChain.push(evoPaths);
                 }else{
                     json = json.chain.evolves_to[0]
-                    if(currentPokemon == json.species.name){
+                    if(currentPokemonID == json.species.url.split('/')[6]){
                         currentevoIndex = 1;
                     }
+                    pokemonEvolutionChainbyID.push([json.species.url.split('/')[6]]);
                     pokemonEvolutionChain.push([json.species.name]);
                     if(json.evolves_to.length > 1){
+                        let evoPathsbyID = [];
                         let evoPaths = [];
                         for(evo in json.evolves_to){
-                            if(currentPokemon == json.evolves_to[evo].species.name){
+                            if(currentPokemonID == json.evolves_to[evo].species.url.split('/')[6]){
                                 currentevoIndex = 2;
                             }
+                            evoPathsbyID.push(json.evolves_to[evo].species.url.split('/')[6]);
                             evoPaths.push(json.evolves_to[evo].species.name);
                         }
+                        pokemonEvolutionChainbyID.push(evoPathsbyID);
                         pokemonEvolutionChain.push(evoPaths);
                     }else{
                         if(json.evolves_to.length != 0){
-                            if(currentPokemon == json.evolves_to[0].species.name){
+                            if(currentPokemonID == json.evolves_to[0].species.url.split('/')[6]){
                                 currentevoIndex = 2;
                             }
+                            pokemonEvolutionChainbyID.push([json.evolves_to[0].species.url.split('/')[6]]);
                             pokemonEvolutionChain.push([json.evolves_to[0].species.name]);
                         }
                     }
                 }
             }
+            console.log(pokemonEvolutionChainbyID);
             console.log(pokemonEvolutionChain);
             console.log(currentevoIndex);
         });
@@ -362,8 +372,8 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         }
         if(!stop){
-            if(pokemonEvolutionChain[currentevoIndex].length == 1){
-                searchInput.value = pokemonEvolutionChain[currentevoIndex];
+            if(pokemonEvolutionChainbyID[currentevoIndex].length == 1){
+                searchInput.value = pokemonEvolutionChainbyID[currentevoIndex];
                 searchPokemon(searchInput.value);
             }else{
                 multipleEvoPaths();
