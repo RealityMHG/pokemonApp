@@ -49,6 +49,11 @@ window.addEventListener('DOMContentLoaded', () => {
     const prevPokemonEvo = document.querySelector('.prev-evo');
     const nextPokemonEvo = document.querySelector('.next-evo');
 
+    const pokemonInfo = document.querySelector('.pokemon-info');
+    const infoBox = document.querySelector('.info-box');
+    const infoBoxWeight = document.querySelector('.info-box .weight');
+    const infoBoxHeight = document.querySelector('.info-box .height');
+
     const toastBox = document.querySelector('.toast-box');
     
     const popUpEvoPath = document.querySelector('.evo-pop-up');
@@ -91,6 +96,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
     pokemonTurn.addEventListener('click', () => {
         turnPokemon();
+    });
+
+    pokemonInfo.addEventListener('mouseenter', () => {
+        infoBox.style.visibility = 'visible';
+    });
+
+    pokemonInfo.addEventListener('mouseleave', () => {
+        infoBox.style.visibility = 'hidden';
     });
 
     prevPokemonEvo.addEventListener('click', () => {
@@ -178,6 +191,10 @@ window.addEventListener('DOMContentLoaded', () => {
     
                 currentPokemonID = json.id;
                 pokemonId.innerHTML = '#' + json.id;
+
+                infoBoxHeight.innerHTML = json.height * 10 + " cm";
+                infoBoxWeight.innerHTML = json.weight / 10 + " kg";
+
                 pokemonImage.src = pokemonDefaultImages[0];
 
                 if(searchInput.value != json.species.name){
