@@ -148,7 +148,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
         currentPokemon = pokemon;
         currentevoIndex = 0;
-        currentPokemonGen = 'Select Generation';
+        currentPokemonGen = 'Game Models';
         isItForward = true;
         
         if(isItShiny)
@@ -286,27 +286,30 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     function loadFormList(){
-        let forms = document.querySelectorAll('.form');
-        formSelectField = document.querySelector('.form-selector .select-field');
-        formSelectText = document.querySelector('.form-selector .select-text');
-        formArrowIcon = document.querySelector('.form-selector .fa-caret-down');
-
-        formSelectText.innerHTML = currentPokemon;
-
-        forms.forEach((form) => {
-            form.addEventListener('click', () => {
+        if(pokemonFormList.length>1){
+            formSelector.style.visibility = 'visible';
+            let forms = document.querySelectorAll('.form');
+            formSelectField = document.querySelector('.form-selector .select-field');
+            formSelectText = document.querySelector('.form-selector .select-text');
+            formArrowIcon = document.querySelector('.form-selector .fa-caret-down');
+    
+            formSelectText.innerHTML = currentPokemon;
+    
+            forms.forEach((form) => {
+                form.addEventListener('click', () => {
+                    formList.classList.toggle('hide');
+                    formArrowIcon.classList.toggle('rotate');
+                    let evoIndex = currentevoIndex;
+                    searchPokemon(form.textContent);
+                    currentevoIndex = evoIndex;
+                });
+            });
+    
+            formSelectField.addEventListener('click', () => {
                 formList.classList.toggle('hide');
                 formArrowIcon.classList.toggle('rotate');
-                let evoIndex = currentevoIndex;
-                searchPokemon(form.textContent);
-                currentevoIndex = evoIndex;
             });
-        });
-
-        formSelectField.addEventListener('click', () => {
-            formList.classList.toggle('hide');
-            formArrowIcon.classList.toggle('rotate');
-        });
+        }
     }
 
     function addType(type){
@@ -478,7 +481,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 }
             }
         }
-        if(pokemonGensList.length < 2){
+        if(pokemonGensList.length < 1){
             genSelector.style.display = 'none';
         }else{
             loadGenList();
@@ -486,14 +489,15 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     function getFormsList(formsList){
-        console.log(formsList)
         if(formsList.length>1){
-            formSelector.style.visibility = 'visible';
             for(form in formsList){
-                let formUnit = document.createElement('li');
-                formUnit.textContent = formsList[form].pokemon.name;
-                formUnit.classList.add('form');
-                formList.appendChild(formUnit);
+                if(!formsList[form].pokemon.name.includes('totem') && !formsList[form].pokemon.name.includes('starter')){
+                    pokemonFormList.push(formsList[form].pokemon.name);
+                    let formUnit = document.createElement('li');
+                    formUnit.textContent = formsList[form].pokemon.name;
+                    formUnit.classList.add('form');
+                    formList.appendChild(formUnit);
+                }
             }   
             loadFormList();
         }
