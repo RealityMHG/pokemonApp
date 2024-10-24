@@ -488,10 +488,13 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    //Take out limitations with offcial artwork edit
     function getFormsList(formsList){
         if(formsList.length>1){
             for(form in formsList){
-                if(!formsList[form].pokemon.name.includes('totem') && !formsList[form].pokemon.name.includes('starter')){
+                if(!formsList[form].pokemon.name.includes('totem') &&
+                 !formsList[form].pokemon.name.includes('starter') &&
+                !formsList[form].pokemon.name.includes('hangry')){
                     pokemonFormList.push(formsList[form].pokemon.name);
                     let formUnit = document.createElement('li');
                     formUnit.textContent = formsList[form].pokemon.name;
