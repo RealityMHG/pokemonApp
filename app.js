@@ -38,6 +38,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const search = document.querySelector('.search-box button');
     const pokeBall = document.querySelector('.search-box img');
     const searchInput = document.querySelector('input');
+    const pokemonIcon = document.querySelector('.pokemon-icon');
 
     const pokemonBox = document.querySelector('.pokemon-box');
     const pokemonId = document.querySelector('.pokemon-id');
@@ -61,14 +62,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const randomPokemon = document.querySelector('.random-pokemon i');
 
-    let currentPokemon = '';
+    let currentPokemonSpecies = '';
     let currentPokemonID = 0;
     let currentevoIndex = 0;
     let pokemonEvolutionChain = [];
     let pokemonEvolutionChainbyID = [];
     
-    let pokemonGensList = [];
+    let pokemonFormList = [];
+    let currentPokemon = '';
     
+    let pokemonGensList = [];
     let currentPokemonGen = 'normal';
     let pokemonDefaultImages = [];
     let pokemonShinyImages = [];
@@ -164,6 +167,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 pokemonBox.style.display = 'none';
                 genSelector.style.display = 'none';
                 error404.style.display = 'block';
+                pokemonIcon.src = '';
             }
             return response.json()
         })
@@ -197,8 +201,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
                 pokemonImage.src = pokemonDefaultImages[0];
 
-                if(searchInput.value != json.species.name){
-                    searchInput.value = json.species.name;
+                currentPokemonSpecies = json.species.name;
+                if(searchInput.value != currentPokemonSpecies){
+                    searchInput.value = currentPokemonSpecies;
                 }
     
                 for(let i=0; i<json.types.length; i++){
@@ -300,10 +305,11 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     function getEvolutionChain(){
-        fetch(`https://pokeapi.co/api/v2/pokemon-species/${currentPokemonID}`)
+        fetch(`https://pokeapi.co/api/v2/pokemon-species/${currentPokemonSpecies}`)
         .then(response => response.json())
         .then(json => {
             getPokemonEvolutions(json.evolution_chain.url);
+            console.log(json.varieties);
         });
     }
 
@@ -356,9 +362,6 @@ window.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             }
-            console.log(pokemonEvolutionChainbyID);
-            console.log(pokemonEvolutionChain);
-            console.log(currentevoIndex);
         });
     }
 
@@ -425,9 +428,19 @@ window.addEventListener('DOMContentLoaded', () => {
                         genList.appendChild(gameUnit);
                     }
                 }
+                if(game == 'icons'){
+                    pokemonIcon.src = genGames[game].front_default;
+                    if( genGames[game].front_default == null){
+                        pokemonIcon.src = '';
+                    }
+                }
             }
         }
-        loadGenList();
+        if(pokemonGensList.length < 2){
+            genSelector.style.display = 'none';
+        }else{
+            loadGenList();
+        }
     }
 
     function showToast(msg){

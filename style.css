@@ -169,16 +169,24 @@ font-weight: bold;
     border: 1px solid grey;
 }
 
-.search-box img{
+.pokeball{
     width: 30px;
     -webkit-transition: -webkit-transform 1s;
     transition: -webkit-transform 1s;
 }
 
-.search-box img:hover{
+.pokeball:hover{
     -webkit-transform: rotate(360deg) translateZ(0);
     transform: rotate(360deg) translateZ(0);
     cursor: pointer;
+}
+
+.pokemon-icon{
+    width: 30px;
+    scale: 3;
+    position: relative;
+    top: -20px;
+    left: -30px;
 }
 
 .search-box button:hover,
