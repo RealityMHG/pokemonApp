@@ -29,9 +29,9 @@ window.addEventListener('DOMContentLoaded', () => {
     const genSelector = document.querySelector('.gen-selector');
     const genList = document.querySelector('.gen-list');
 
-    let selectField = document.querySelector('.select-field');
-    let selectText = document.querySelector('.select-text');
-    let arrowIcon = document.querySelector('.fa-caret-down');
+    let genSelectField = document.querySelector('.gen-selector .select-field');
+    let genSelectText = document.querySelector('.gen-selector .select-text');
+    let genArrowIcon = document.querySelector('.gen-selector .fa-caret-down');
 
     const body = document.querySelector('body');
     const container = document.querySelector('.container');
@@ -39,6 +39,13 @@ window.addEventListener('DOMContentLoaded', () => {
     const pokeBall = document.querySelector('.search-box img');
     const searchInput = document.querySelector('input');
     const pokemonIcon = document.querySelector('.pokemon-icon');
+
+    const formSelector = document.querySelector('.form-selector');
+    const formList = document.querySelector('.form-list');
+
+    let formSelectField = document.querySelector('.form-selector .select-field');
+    let formSelectText = document.querySelector('.form-selector .select-text');
+    let formArrowIcon = document.querySelector('.form-selector .fa-caret-down');
 
     const pokemonBox = document.querySelector('.pokemon-box');
     const pokemonId = document.querySelector('.pokemon-id');
@@ -151,10 +158,18 @@ window.addEventListener('DOMContentLoaded', () => {
             genList.removeChild(genList.lastChild);
         }
 
+        while(formList.firstChild){
+            formList.removeChild(formList.lastChild);
+        }
+
         pokemonGensList = [];
+        pokemonFormList = [];
         pokemonEvolutionChain = [];
         pokemonEvolutionChainbyID = [];
-        selectField.replaceWith(selectField.cloneNode(true));
+        genSelectField.replaceWith(genSelectField.cloneNode(true));
+        formSelectField.replaceWith(formSelectField.cloneNode(true));
+
+        formSelector.style.visibility = 'hidden';
 
         if(currentPokemon == '')
             return;
@@ -166,6 +181,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 container.style.height = '350px';
                 pokemonBox.style.display = 'none';
                 genSelector.style.display = 'none';
+                formSelector.style.display = 'none';
                 error404.style.display = 'block';
                 pokemonIcon.src = '';
             }
@@ -177,6 +193,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 error404.style.display = 'none';
                 
                 genSelector.style.display = 'block';
+                formSelector.style.display = 'block';
 
                 pokemonBox.style.display = 'block';
     
@@ -193,6 +210,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 else
                     pokemonShiny.style.visibility = 'hidden';
     
+                currentPokemon = json.name;
                 currentPokemonID = json.id;
                 pokemonId.innerHTML = '#' + json.id;
 
@@ -225,15 +243,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
     function loadGenList(){
         let games = document.querySelectorAll('.game');
-        selectField = document.querySelector('.select-field');
-        selectText = document.querySelector('.select-text');
-        arrowIcon = document.querySelector('.fa-caret-down');
+        genSelectField = document.querySelector('.gen-selector .select-field');
+        genSelectText = document.querySelector('.gen-selector .select-text');
+        genArrowIcon = document.querySelector('.gen-selector .fa-caret-down');
 
-        selectText.innerHTML = currentPokemonGen;
+        genSelectText.innerHTML = currentPokemonGen;
         games.forEach((game) => {
             game.addEventListener('click', () => {
-                selectText.innerHTML = game.textContent;
-                currentPokemonGen = selectText.innerHTML;
+                genSelectText.innerHTML = game.textContent;
+                currentPokemonGen = genSelectText.innerHTML;
                 let getGenClass = pokemonGensList.find((gen) => gen.game == currentPokemonGen);
                 pokemonDefaultImages[0] = getGenClass.defaultSprite[0];
                 pokemonDefaultImages[1] = getGenClass.defaultSprite[1];
@@ -257,13 +275,37 @@ window.addEventListener('DOMContentLoaded', () => {
                     pokemonShiny.style.visibility = 'hidden';
 
                 genList.classList.toggle('hide');
-                arrowIcon.classList.toggle('rotate');
+                genArrowIcon.classList.toggle('rotate');
             });
         });
 
-        selectField.addEventListener('click', () => {
+        genSelectField.addEventListener('click', () => {
             genList.classList.toggle('hide');
-            arrowIcon.classList.toggle('rotate');
+            genArrowIcon.classList.toggle('rotate');
+        });
+    }
+
+    function loadFormList(){
+        let forms = document.querySelectorAll('.form');
+        formSelectField = document.querySelector('.form-selector .select-field');
+        formSelectText = document.querySelector('.form-selector .select-text');
+        formArrowIcon = document.querySelector('.form-selector .fa-caret-down');
+
+        formSelectText.innerHTML = currentPokemon;
+
+        forms.forEach((form) => {
+            form.addEventListener('click', () => {
+                formList.classList.toggle('hide');
+                formArrowIcon.classList.toggle('rotate');
+                let evoIndex = currentevoIndex;
+                searchPokemon(form.textContent);
+                currentevoIndex = evoIndex;
+            });
+        });
+
+        formSelectField.addEventListener('click', () => {
+            formList.classList.toggle('hide');
+            formArrowIcon.classList.toggle('rotate');
         });
     }
 
@@ -309,7 +351,7 @@ window.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(json => {
             getPokemonEvolutions(json.evolution_chain.url);
-            console.log(json.varieties);
+            getFormsList(json.varieties);
         });
     }
 
@@ -440,6 +482,20 @@ window.addEventListener('DOMContentLoaded', () => {
             genSelector.style.display = 'none';
         }else{
             loadGenList();
+        }
+    }
+
+    function getFormsList(formsList){
+        console.log(formsList)
+        if(formsList.length>1){
+            formSelector.style.visibility = 'visible';
+            for(form in formsList){
+                let formUnit = document.createElement('li');
+                formUnit.textContent = formsList[form].pokemon.name;
+                formUnit.classList.add('form');
+                formList.appendChild(formUnit);
+            }   
+            loadFormList();
         }
     }
 
