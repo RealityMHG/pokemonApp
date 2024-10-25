@@ -26,6 +26,8 @@ window.addEventListener('DOMContentLoaded', () => {
     const error404 = document.querySelector('.not-found');
     let is404 = false;
 
+    const gameToggle = document.querySelector('.game-toggle');
+
     const genSelector = document.querySelector('.gen-selector');
     const genList = document.querySelector('.gen-list');
 
@@ -80,11 +82,13 @@ window.addEventListener('DOMContentLoaded', () => {
     
     let pokemonGensList = [];
     let currentPokemonGen = 'normal';
+    let pokemonArtImages = [];
     let pokemonDefaultImages = [];
     let pokemonShinyImages = [];
    
     let isItForward = true;
     let isItShiny = false;
+    let isItArt = true;
 
     pokeBall.addEventListener('click', () => {
         location.reload();
@@ -128,6 +132,10 @@ window.addEventListener('DOMContentLoaded', () => {
         searchPokemon(Math.floor(Math.random() * numOfPokemon));
     });
 
+    gameToggle.addEventListener('click', () => {
+        gameArtToggle();
+    });
+
     class PokemonFromGen{
         constructor(gen, game, defaultSprite, shinySprite){
             this.gen = gen;
@@ -153,6 +161,10 @@ window.addEventListener('DOMContentLoaded', () => {
         
         if(isItShiny)
             shinyToggle();
+
+        if(!isItArt){
+            gameArtToggle();
+        }
 
         while(genList.firstChild){
             genList.removeChild(genList.lastChild);
@@ -184,6 +196,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 formSelector.style.display = 'none';
                 error404.style.display = 'block';
                 pokemonIcon.src = '';
+                gameToggle.style.display = 'none';
             }
             return response.json()
         })
@@ -192,18 +205,15 @@ window.addEventListener('DOMContentLoaded', () => {
                 container.style.height = '100px';
                 error404.style.display = 'none';
                 
-                genSelector.style.display = 'block';
                 formSelector.style.display = 'block';
 
                 pokemonBox.style.display = 'block';
+
+                gameToggle.style.display = 'block';
     
                 pokemonDefaultImages = [json.sprites.front_default, json.sprites.back_default];
                 pokemonShinyImages = [json.sprites.front_shiny, json.sprites.back_shiny];
-
-                if(pokemonDefaultImages[1] != null)
-                    pokemonTurn.style.visibility = 'visible';
-                else
-                    pokemonTurn.style.visibility = 'hidden';
+                pokemonArtImages = [json.sprites.other['official-artwork'].front_default, json.sprites.other['official-artwork'].front_shiny];
 
                 if(pokemonShinyImages[0] != null)
                     pokemonShiny.style.visibility = 'visible';
@@ -217,7 +227,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 infoBoxHeight.innerHTML = json.height * 10 + " cm";
                 infoBoxWeight.innerHTML = json.weight / 10 + " kg";
 
-                pokemonImage.src = pokemonDefaultImages[0];
+                pokemonImage.src = pokemonArtImages[0];
 
                 currentPokemonSpecies = json.species.name;
                 if(searchInput.value != currentPokemonSpecies){
@@ -341,11 +351,42 @@ window.addEventListener('DOMContentLoaded', () => {
         if(!isItShiny){
             pokemonShiny.style.backgroundColor = '#1d6d8a';
             isItShiny = true;
-            pokemonImage.src = pokemonShinyImages[0];
+            if(isItArt){
+                pokemonImage.src = pokemonArtImages[1];
+            }else{
+                pokemonImage.src = pokemonShinyImages[0];
+            }
         }else{
             pokemonShiny.style.backgroundColor = '#77d9fc'
             isItShiny = false;
-            pokemonImage.src = pokemonDefaultImages[0];
+            if(isItArt){
+                pokemonImage.src = pokemonArtImages[0];
+            }else{
+                pokemonImage.src = pokemonDefaultImages[0];
+            }
+        }
+    }
+
+    function gameArtToggle(){
+        gameToggle.classList.toggle('active');
+        if(isItArt){
+            genSelector.style.display = 'block';
+            pokemonTurn.style.visibility = 'visible';
+            if(isItShiny){
+                pokemonImage.src = pokemonShinyImages[0];
+            }else{
+                pokemonImage.src = pokemonDefaultImages[0];
+            }  
+            isItArt = false;
+        }else{
+            genSelector.style.display = 'none';
+            pokemonTurn.style.visibility = 'hidden';
+            if(isItShiny){
+                pokemonImage.src = pokemonArtImages[1];
+            }else{
+                pokemonImage.src = pokemonArtImages[0];
+            }
+            isItArt = true;
         }
     }
 
