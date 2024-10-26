@@ -60,6 +60,23 @@ body{
                 inset 0 -4px 4px rgba(255, 255, 255, 1);
 }
 
+.fa-gamepad,
+.fa-brush{
+    position: absolute;
+    z-index: 1;
+}
+
+.fa-gamepad{
+    left: 48px;
+    top: 10px;
+}
+
+.fa-brush{
+    left: 11px;
+    top: 10px;
+    color: #fff;
+}
+
 .gen-selector{
     font-family: 'Roboto', sans-serif;
     position: absolute;
