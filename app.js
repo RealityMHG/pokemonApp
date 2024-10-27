@@ -225,12 +225,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
                 if(isItArt){
                     pokemonImage.src = pokemonArtImages[0];
+                    pokemonTurn.style.display = 'none';
                 }else{
                     pokemonImage.src = pokemonDefaultImages[0];
                     if(pokemonDefaultImages[1] != null){
-                        pokemonTurn.style.visibility = 'visible';
+                        pokemonTurn.style.display = 'block';
                     }else{
-                        pokemonTurn.style.visibility = 'hidden';
+                        pokemonTurn.style.display = 'none';
                     }
                 }
 
@@ -280,9 +281,9 @@ window.addEventListener('DOMContentLoaded', () => {
                 pokemonImage.src = pokemonDefaultImages[0];
 
                 if(pokemonDefaultImages[1] == null)
-                    pokemonTurn.style.visibility = 'hidden';
+                    pokemonTurn.style.display = 'none';
                 else
-                    pokemonTurn.style.visibility = 'visible';
+                    pokemonTurn.style.display = 'block';
 
                 if(pokemonShinyImages[0] != null)
                     pokemonShiny.style.visibility = 'visible';
@@ -375,8 +376,18 @@ window.addEventListener('DOMContentLoaded', () => {
     function gameArtToggle(){
         gameToggle.classList.toggle('active');
         if(isItArt){
-            pokemonTurn.style.visibility = 'visible';
-            genSelector.style.display = 'block';
+            if(pokemonDefaultImages[1] != null){
+                pokemonTurn.style.display = 'block';
+            }else{
+                pokemonTurn.style.display = 'none';
+            }
+
+            if(pokemonGensList.length != 0){
+                genSelector.style.display = 'block';
+            }else{
+                genSelector.style.display = 'none';
+            }
+
             if(isItShiny){
                 pokemonImage.src = pokemonShinyImages[0];
             }else{
@@ -384,7 +395,7 @@ window.addEventListener('DOMContentLoaded', () => {
             }  
             isItArt = false;
         }else{
-            pokemonTurn.style.visibility = 'hidden';
+            pokemonTurn.style.display = 'none';
             genSelector.style.display = 'none';
             if(isItShiny){
                 pokemonImage.src = pokemonArtImages[1];
@@ -530,11 +541,13 @@ window.addEventListener('DOMContentLoaded', () => {
         if(pokemonGensList.length < 1){
             genSelector.style.display = 'none';
         }else{
+            if(!isItArt)
+                genSelector.style.display = 'block';
+            
             loadGenList();
         }
     }
 
-    //Take out limitations with offcial artwork edit
     function getFormsList(formsList){
         if(formsList.length>1){
             for(form in formsList){
