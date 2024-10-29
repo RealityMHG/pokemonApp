@@ -81,6 +81,7 @@ window.addEventListener('DOMContentLoaded', () => {
     let currentevoIndex = 0;
     let pokemonEvolutionChain = [];
     let pokemonEvolutionChainbyID = [];
+    let pokemonEvolutionLogo = [];
     
     let pokemonFormList = [];
     let currentPokemon = '';
@@ -91,6 +92,7 @@ window.addEventListener('DOMContentLoaded', () => {
     let pokemonDefaultImages = [];
     let pokemonShinyImages = [];
    
+    let isItAnEvo = false;
     let isItAForm = false;
     let isItForward = true;
     let isItShiny = false;
@@ -164,7 +166,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         currentPokemon = pokemon;
-        currentevoIndex = 0;
+        
         currentPokemonGen = 'Game Models';
         isItForward = true;
         
@@ -181,8 +183,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
         pokemonGensList = [];
         pokemonFormList = [];
-        pokemonEvolutionChain = [];
-        pokemonEvolutionChainbyID = [];
+
+        if(!isItAnEvo){
+            currentevoIndex = 0;
+            pokemonEvolutionChain = [];
+            pokemonEvolutionChainbyID = [];
+        }
+
         genSelectField.replaceWith(genSelectField.cloneNode(true));
         formSelectField.replaceWith(formSelectField.cloneNode(true));
 
@@ -270,9 +277,10 @@ window.addEventListener('DOMContentLoaded', () => {
                     pokemonBox.style.display = "block";
                     body.style.backgroundColor = colours[json.types[0].type.name];
     
-                    getEvolutionChain();
+                    getEvolutionChain(isItAnEvo);
                     getAllGenSprites(json.sprites.versions);
                     isItAForm = false;
+                    isItAnEvo = false;
                 }
             });
     }
@@ -460,11 +468,13 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function getEvolutionChain(){
+    function getEvolutionChain(isItAnEvo){
         fetch(`https://pokeapi.co/api/v2/pokemon-species/${currentPokemonSpecies}`)
         .then(response => response.json())
         .then(json => {
-            getPokemonEvolutions(json.evolution_chain.url);
+            if(!isItAnEvo)
+                getPokemonEvolutions(json.evolution_chain.url);
+
             if(currentPokemonSpecies != 'koraidon')
                 getFormsList(json.varieties);
         });
@@ -540,6 +550,7 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         }
         if(!stop){
+            isItAnEvo = true;
             if(pokemonEvolutionChainbyID[currentevoIndex].length == 1){
                 searchInput.value = pokemonEvolutionChainbyID[currentevoIndex];
                 searchPokemon(searchInput.value);
