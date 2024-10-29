@@ -324,6 +324,11 @@ font-weight: bold;
 
 .shiny{
     position: absolute;
+    background: #77d9fc;
+}
+
+.shiny.active{
+    background: #1d6d8a;
 }
 
 .pokemon-type{
