@@ -81,7 +81,6 @@ window.addEventListener('DOMContentLoaded', () => {
     let currentevoIndex = 0;
     let pokemonEvolutionChain = [];
     let pokemonEvolutionChainbyID = [];
-    let pokemonEvolutionLogo = [];
     
     let pokemonFormList = [];
     let currentPokemon = '';
@@ -207,6 +206,7 @@ window.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             loadPokemon();
         },500);
+        
     }
 
     function loadPokemon(){
