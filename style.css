@@ -101,7 +101,6 @@ body{
 
 .game:hover{
     background: rgba(255, 255, 255, 0.7);
-
 }
 
 .form:hover{
@@ -190,7 +189,6 @@ font-weight: bold;
 
 .container{
     position: relative;
-    margin-left: 60px;
     width: 500px;
     height: 105px;
     background: #fff;
@@ -261,6 +259,62 @@ font-weight: bold;
 .search-box button:hover,
 .turn:hover,
 #select-field:hover{
+    color: #fff;
+    background: #1d6d8a;
+}
+
+.pokemon-suggested{
+    font-family: 'Roboto', sans-serif;
+    position: absolute;
+    margin-left: 27px;
+    z-index: 1;
+    width: 230px;
+    border-radius: 3px;
+}
+
+.pokemon-list{
+    padding: 2px 0 2px 0;
+    position: fixed;
+    color: #1d6d8a;
+    background: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+    width: 250px;
+    list-style-type: none;
+    max-height: 200px;
+    overflow: auto;
+    z-index: 1;
+}
+
+/* Scrollbar Customization */
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    border-radius: 2px;
+    background: #fff;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #1d6d8a;
+    border-radius: 2px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #1d6d8a;
+  }
+
+.pokemon-name{
+    padding: 8px 5px;
+    cursor: pointer;
+    text-transform: capitalize;
+}
+
+.pokemon-name:hover{
     color: #fff;
     background: #1d6d8a;
 }

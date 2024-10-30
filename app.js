@@ -27,6 +27,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
     //Number of pokemon available
     const numOfPokemon = 1025;
+    const allPokemonNames = [];
+    getAllPokemonNames();
 
     const error404 = document.querySelector('.not-found');
     let is404 = false;
@@ -46,6 +48,9 @@ window.addEventListener('DOMContentLoaded', () => {
     const pokeBall = document.querySelector('.search-box img');
     const searchInput = document.querySelector('input');
     const pokemonIcon = document.querySelector('.pokemon-icon');
+
+    const pokemonList = document.querySelector('.pokemon-list');
+    let pokemonNames = document.querySelectorAll('.pokemon-name');
 
     const formSelector = document.querySelector('.form-selector');
     const formList = document.querySelector('.form-list');
@@ -109,9 +114,17 @@ window.addEventListener('DOMContentLoaded', () => {
 
     //Search button, Sends pokemon typed to search with the enter key
     searchInput.addEventListener('keyup', (event) => {
+        let result = [];
         if(event.key == 'Enter'){
             searchPokemon(searchInput.value.toLowerCase());
         }
+
+        if(searchInput.value.length){
+            result = allPokemonNames.filter((keyword) => {
+                return keyword.startsWith(searchInput.value.toLowerCase());
+            });
+        }
+        displaySuggested(result);
     });
 
     //Toggles shiny
@@ -157,11 +170,45 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function getAllPokemonNames(){
+        fetch(`https://pokeapi.co/api/v2/pokemon?limit=${numOfPokemon}&offset=0`)
+        .then(response => response.json())
+        .then(json => {
+           fillAllPokemonNames(json.results);
+        });
+    }
+
+    function fillAllPokemonNames(results){
+        for(let pokemon in results){
+           allPokemonNames.push(results[pokemon].name);
+        }
+    }
+
+    function displaySuggested(result){
+        while(pokemonList.firstChild){
+            pokemonList.removeChild(pokemonList.lastChild);
+        }
+
+        result.map((pokeName) => {
+            let pokemonName = document.createElement('li');
+            pokemonName.classList.add('pokemon-name');
+            pokemonName.textContent = pokeName;
+            pokemonList.appendChild(pokemonName);
+            pokemonName.addEventListener('click', () => {
+                searchPokemon(pokemonName.textContent);
+            });
+        });
+    }
+
     function searchPokemon(pokemon){
         is404 = false;
 
         while(pokemonType.firstChild){
             pokemonType.removeChild(pokemonType.lastChild);
+        }
+
+        while(pokemonList.firstChild){
+            pokemonList.removeChild(pokemonList.lastChild);
         }
 
         currentPokemon = pokemon;
