@@ -121,6 +121,32 @@ body{
     transition: 0.4s ease;
 }
 
+.sound-controls{
+    position: absolute;
+    top: 38px;
+    left: 20px;
+    display: flex;
+    gap: 15px;
+    font-size: 25px;
+
+}
+
+.sound-btn,
+.fa-music.active{
+    cursor: pointer;
+    color: #fff;
+    opacity: 0.6;
+}
+
+.sound-btn:hover{
+    opacity: 1;
+}
+
+.fa-music,
+.fa-volume-xmark{
+    color: #1d6d8a;
+}
+
 .random-pokemon{
     font-family: 'Roboto', sans-serif;
     position: relative;
@@ -188,6 +214,7 @@ font-weight: bold;
 }
 
 .container{
+    margin-left: 40px;
     position: relative;
     width: 500px;
     height: 105px;
@@ -291,20 +318,20 @@ font-weight: bold;
     width: 10px;
   }
   
-  /* Track */
-  ::-webkit-scrollbar-track {
+/* Track */
+::-webkit-scrollbar-track {
     border-radius: 2px;
     background: #fff;
   }
   
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
+/* Handle */
+::-webkit-scrollbar-thumb {
     background: #1d6d8a;
     border-radius: 2px;
   }
   
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
     background: #1d6d8a;
   }
 

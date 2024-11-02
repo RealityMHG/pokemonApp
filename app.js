@@ -33,6 +33,9 @@ window.addEventListener('DOMContentLoaded', () => {
     const error404 = document.querySelector('.not-found');
     let is404 = false;
 
+    const music = document.querySelector('.fa-music');
+    const sound  = document.querySelector('.fa-volume-high');
+
     const gameToggle = document.querySelector('.game-toggle');
 
     const genSelector = document.querySelector('.gen-selector');
@@ -50,7 +53,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const pokemonIcon = document.querySelector('.pokemon-icon');
 
     const pokemonList = document.querySelector('.pokemon-list');
-    let pokemonNames = document.querySelectorAll('.pokemon-name');
 
     const formSelector = document.querySelector('.form-selector');
     const formList = document.querySelector('.form-list');
@@ -81,6 +83,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const randomPokemon = document.querySelector('.random-pokemon i');
 
+    let musicFile = new Audio('backgroundMusic.mp3');
+
     let currentPokemonSpecies = '';
     let currentPokemonID = 0;
     let currentevoIndex = 0;
@@ -96,12 +100,14 @@ window.addEventListener('DOMContentLoaded', () => {
     let pokemonDefaultImages = [];
     let pokemonShinyImages = [];
    
+    let isMusicOn = false;
+    let isSoundOn = true;
     let isItAnEvo = false;
     let isItAForm = false;
     let isItForward = true;
     let isItShiny = false;
     let isItArt = true;
-
+    
     //Pokeball logo on search bar, refreshes pages when clicked
     pokeBall.addEventListener('click', () => {
         location.reload();
@@ -109,6 +115,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     //Search button, Sends pokemon typed to search
     search.addEventListener('click', () => {
+        pokemonList.style.visibility = 'hidden';
         searchPokemon(searchInput.value.toLowerCase());
     });
 
@@ -116,15 +123,27 @@ window.addEventListener('DOMContentLoaded', () => {
     searchInput.addEventListener('keyup', (event) => {
         let result = [];
         if(event.key == 'Enter'){
+            pokemonList.style.visibility = 'hidden';
             searchPokemon(searchInput.value.toLowerCase());
+        }else{
+            if(searchInput.value.length){
+                pokemonList.style.visibility = 'visible';
+                result = allPokemonNames.filter((keyword) => {
+                    return keyword.startsWith(searchInput.value.toLowerCase());
+                });
+                displaySuggested(result);
+            }
         }
 
-        if(searchInput.value.length){
-            result = allPokemonNames.filter((keyword) => {
-                return keyword.startsWith(searchInput.value.toLowerCase());
-            });
-        }
-        displaySuggested(result);
+    });
+
+    //Music and sound controls
+    music.addEventListener('click', () => {
+        musicToggle();
+    });
+
+    sound.addEventListener('click', () => {
+        soundToggle();
     });
 
     //Toggles shiny
@@ -195,6 +214,7 @@ window.addEventListener('DOMContentLoaded', () => {
             pokemonName.textContent = pokeName;
             pokemonList.appendChild(pokemonName);
             pokemonName.addEventListener('click', () => {
+                pokemonList.style.visibility = 'hidden';
                 searchPokemon(pokemonName.textContent);
             });
         });
@@ -206,11 +226,7 @@ window.addEventListener('DOMContentLoaded', () => {
         while(pokemonType.firstChild){
             pokemonType.removeChild(pokemonType.lastChild);
         }
-
-        while(pokemonList.firstChild){
-            pokemonList.removeChild(pokemonList.lastChild);
-        }
-
+    
         currentPokemon = pokemon;
         
         currentPokemonGen = 'Game Models';
@@ -432,6 +448,21 @@ window.addEventListener('DOMContentLoaded', () => {
         newType.style.backgroundColor = colours[type];
     }
 
+    function musicToggle(){      
+        music.classList.toggle('active');
+        if(isMusicOn){
+            musicFile.pause();
+        }else{
+            musicFile.play();
+        }
+        isMusicOn = !isMusicOn;
+    }
+
+    function soundToggle(){
+        sound.classList.toggle('fa-volume-high');
+        sound.classList.toggle('fa-volume-xmark');
+    }
+
     function turnPokemon(){
         let correctImages = [];
         if(isItShiny){
@@ -609,6 +640,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     function multipleEvoPaths(){
         container.style.height = '0px';
+        pokemonList.style.visibility = 'hidden';
         popUpEvoPath.classList.add('open-pop');
         for(evo in pokemonEvolutionChain[currentevoIndex]){
             let pokemonEvo = pokemonEvolutionChain[currentevoIndex][evo];
@@ -621,6 +653,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 searchPokemon(searchInput.value);
                 popUpEvoPath.classList.remove('open-pop');
                 container.style.height = '450px';
+                pokemonList.style.visibility = 'visible';
                 while(evoPathContainer.firstChild){
                     evoPathContainer.removeChild(evoPathContainer.lastChild);
                 }
