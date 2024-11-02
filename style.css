@@ -312,13 +312,16 @@ font-weight: bold;
     padding: 2px 0 2px 0;
     position: fixed;
     color: #1d6d8a;
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(241, 241, 241, 0.7);
     font-weight: 500;
     width: 250px;
     list-style-type: none;
     max-height: 200px;
     overflow: auto;
     z-index: 1;
+    border: 1px solid grey;
+    border-radius: 6px;
+    visibility: hidden;
 }
 
 /* Scrollbar Customization For Suggested Pokemon*/

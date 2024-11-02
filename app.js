@@ -88,6 +88,8 @@ window.addEventListener('DOMContentLoaded', () => {
     let currentPokemonSpecies = '';
     let currentPokemonID = 0;
     let currentevoIndex = 0;
+    let currentPokemonCry = new Audio();
+    currentPokemonCry.volume = 0.3;
     let pokemonEvolutionChain = [];
     let pokemonEvolutionChainbyID = [];
     
@@ -138,6 +140,11 @@ window.addEventListener('DOMContentLoaded', () => {
                     return keyword.startsWith(searchInput.value.toLowerCase());
                 });
                 displaySuggested(result);
+            }else{
+                pokemonList.style.visibility = 'hidden';
+            }
+            if(!pokemonList.firstChild){
+                pokemonList.style.visibility = 'hidden';
             }
         }
 
@@ -295,6 +302,8 @@ window.addEventListener('DOMContentLoaded', () => {
                     pokemonShinyImages = [json.sprites.front_shiny, json.sprites.back_shiny];
                     pokemonArtImages = [json.sprites.other['official-artwork'].front_default, json.sprites.other['official-artwork'].front_shiny];
 
+                    currentPokemonCry.src = json.cries.latest;
+
                     if(pokemonDefaultImages[0] == null){
                         pokemonDefaultImages[0] = '/No_image_available.png';
                     }
@@ -350,6 +359,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     getAllGenSprites(json.sprites.versions);
                     isItAForm = false;
                     isItAnEvo = false;
+                    currentPokemonCry.play();
                 }
             });
     }
