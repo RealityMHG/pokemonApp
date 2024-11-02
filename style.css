@@ -312,28 +312,28 @@ font-weight: bold;
     z-index: 1;
 }
 
-/* Scrollbar Customization */
+/* Scrollbar Customization For Suggested Pokemon*/
 /* width */
-::-webkit-scrollbar {
+.pokemon-list::-webkit-scrollbar {
     width: 10px;
-  }
+}
   
 /* Track */
-::-webkit-scrollbar-track {
+.pokemon-list::-webkit-scrollbar-track {
     border-radius: 2px;
     background: #fff;
-  }
+}
   
 /* Handle */
-::-webkit-scrollbar-thumb {
+.pokemon-list::-webkit-scrollbar-thumb {
     background: #1d6d8a;
     border-radius: 2px;
-  }
+}
   
 /* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
+.pokemon-list::-webkit-scrollbar-thumb:hover {
     background: #1d6d8a;
-  }
+}
 
 .pokemon-name{
     padding: 8px 5px;
@@ -370,6 +370,34 @@ font-weight: bold;
     padding: 0;
     background: #000;
     color: #fff;
+}
+
+.form-list{
+    max-height: 120px;
+    overflow: auto;
+}
+
+/* Scrollbar Customization For Form Selector*/
+/* width */
+.form-list::-webkit-scrollbar {
+    width: 10px;
+}
+  
+/* Track */
+.form-list::-webkit-scrollbar-track {
+    border-radius: 2px;
+    background: #fff;
+}
+  
+/* Handle */
+.form-list::-webkit-scrollbar-thumb {
+    background: #4e4e4e;
+    border-radius: 2px;
+}
+  
+/* Handle on hover */
+.form-list::-webkit-scrollbar-thumb:hover {
+    background: #000;
 }
 
 .pokemon-id{

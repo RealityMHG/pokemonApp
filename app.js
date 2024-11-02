@@ -108,6 +108,12 @@ window.addEventListener('DOMContentLoaded', () => {
     let isItShiny = false;
     let isItArt = true;
     
+    body.addEventListener('click', () => {
+        if(document.activeElement != search){
+            pokemonList.style.visibility = 'hidden';
+        }
+    });
+
     //Pokeball logo on search bar, refreshes pages when clicked
     pokeBall.addEventListener('click', () => {
         location.reload();
