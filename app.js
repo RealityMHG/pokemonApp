@@ -100,7 +100,7 @@ window.addEventListener('DOMContentLoaded', () => {
     let pokemonDefaultImages = [];
     let pokemonShinyImages = [];
    
-    let isMusicOn = false;
+    let isMusicOn = 0;
     let isSoundOn = true;
     let isItAnEvo = false;
     let isItAForm = false;
@@ -454,14 +454,28 @@ window.addEventListener('DOMContentLoaded', () => {
         newType.style.backgroundColor = colours[type];
     }
 
-    function musicToggle(){      
-        music.classList.toggle('active');
-        if(isMusicOn){
-            musicFile.pause();
-        }else{
-            musicFile.play();
-        }
-        isMusicOn = !isMusicOn;
+    function musicToggle(){    
+        switch(isMusicOn){
+            case 0:
+                music.classList.toggle('min');
+                musicFile.play();
+                musicFile.volume = 0.5;
+                isMusicOn++;
+                break;
+
+            case 1:
+                music.classList.toggle('min');
+                music.classList.toggle('active');
+                musicFile.volume = 1;
+                isMusicOn++;
+                break;
+            
+            case 2:
+                music.classList.toggle('active');
+                musicFile.pause();
+                isMusicOn=0;
+                break;
+        }  
     }
 
     function soundToggle(){
