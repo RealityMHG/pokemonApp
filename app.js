@@ -114,6 +114,11 @@ window.addEventListener('DOMContentLoaded', () => {
         if(document.activeElement != search){
             pokemonList.style.visibility = 'hidden';
         }
+        if(currentPokemon!=''){
+            if(searchInput.value != currentPokemonSpecies){
+                searchInput.value = currentPokemonSpecies;
+            }
+        }
     });
 
     //Pokeball logo on search bar, refreshes pages when clicked
@@ -376,6 +381,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 error404.style.display = 'block';
                 pokemonIcon.src = '';
                 gameToggle.style.display = 'none';
+                currentPokemon = '';
             }
             return response.json();   
         })
