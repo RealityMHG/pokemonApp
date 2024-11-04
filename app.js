@@ -402,7 +402,7 @@ window.addEventListener('DOMContentLoaded', () => {
         games.forEach((game) => {
             game.addEventListener('click', () => {
                 genSelectText.innerHTML = game.textContent;
-                currentPokemonGen = genSelectText.innerHTML;
+                currentPokemonGen = getTextBack(genSelectText.innerHTML);
                 let getGenClass = pokemonGensList.find((gen) => gen.game == currentPokemonGen);
                 pokemonDefaultImages[0] = getGenClass.defaultSprite[0];
                 pokemonDefaultImages[1] = getGenClass.defaultSprite[1];
@@ -710,7 +710,7 @@ window.addEventListener('DOMContentLoaded', () => {
                              [genGames[game].front_shiny, genGames[game].back_shiny]);
                         pokemonGensList.push(pokemonGen);
                         let gameUnit = document.createElement('li');
-                        gameUnit.textContent = game;
+                        gameUnit.textContent = getTextPrettier(game);
                         gameUnit.classList.add('game');
                         genList.appendChild(gameUnit);
                     }
