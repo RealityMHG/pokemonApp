@@ -364,7 +364,9 @@ window.addEventListener('DOMContentLoaded', () => {
                     getAllGenSprites(json.sprites.versions);
                     isItAForm = false;
                     isItAnEvo = false;
-                    currentPokemonCry.play();
+
+                    if(isSoundOn)
+                        currentPokemonCry.play();
                 }
             });
     }
@@ -442,7 +444,7 @@ window.addEventListener('DOMContentLoaded', () => {
             formSelectText = document.querySelector('.form-selector .select-text');
             formArrowIcon = document.querySelector('.form-selector .fa-caret-down');
     
-            formSelectText.innerHTML = currentPokemon;
+            formSelectText.innerHTML = getTextPrettier(currentPokemon);
     
             forms.forEach((form) => {
                 form.addEventListener('click', () => {
@@ -450,7 +452,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     formArrowIcon.classList.toggle('rotate');
                     let evoIndex = currentevoIndex;
                     isItAForm = true;
-                    searchPokemon(form.textContent);
+                    searchPokemon(getTextBack(form.textContent));
                     currentevoIndex = evoIndex;
                 });
             });
@@ -495,6 +497,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     function soundToggle(){
+        isSoundOn = !isSoundOn;
         sound.classList.toggle('fa-volume-high');
         sound.classList.toggle('fa-volume-xmark');
     }
@@ -735,12 +738,30 @@ window.addEventListener('DOMContentLoaded', () => {
             for(form in formsList){
                 pokemonFormList.push(formsList[form].pokemon.name);
                 let formUnit = document.createElement('li');
-                formUnit.textContent = formsList[form].pokemon.name;
+                formUnit.textContent = getTextPrettier(formsList[form].pokemon.name);
                 formUnit.classList.add('form');
                 formList.appendChild(formUnit);
             }   
             loadFormList();
         }
+    }
+
+    function getTextPrettier(text){
+        let texts = text.split('-');
+        let finalText = '';
+        for(let i in texts){
+            finalText += texts[i].charAt(0).toUpperCase() + texts[i].slice(1) + ' ';
+        }
+        return finalText.substring(0,finalText.length - 1);
+    }
+
+    function getTextBack(text){
+        let texts = text.split(' ');
+        let finalText = '';
+        for(let i in texts){
+            finalText += texts[i].charAt(0).toLowerCase() + texts[i].slice(1) + '-';
+        }
+        return finalText.substring(0,finalText.length - 1);
     }
 
     function showToast(msg){
